@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Content \"$env:APPDATA\\\\Claude\\\\claude_desktop_config.json\" -ErrorAction SilentlyContinue; Get-Content \"$env:USERPROFILE\\\\.claude\\\\settings.json\" -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command npx -ErrorAction SilentlyContinue)",
+      "PowerShell(npx @playwright/mcp@latest --help 2>&1)",
+      "PowerShell(npx.cmd @playwright/mcp@latest --help 2>&1 | Select-Object -First 20)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(Get-Content *)",
+      "PowerShell(claude *)",
+      "mcp__playwright__browser_snapshot",
+      "Skill(run)",
+      "PowerShell(Start-Process -FilePath \"C:\\\\Users\\\\EyT\\\\OneDrive\\\\Desktop\\\\Ana\\\\Roadmaps\\\\PetCareJournal\\\\api\\\\.venv\\\\Scripts\\\\uvicorn.exe\" -ArgumentList \"main:app\", \"--host\", \"127.0.0.1\", \"--port\", \"8000\" -WorkingDirectory \"C:\\\\Users\\\\EyT\\\\OneDrive\\\\Desktop\\\\Ana\\\\Roadmaps\\\\PetCareJournal\\\\api\\\\FastApi\" -WindowStyle Hidden)",
+      "PowerShell(Start-Sleep -Seconds 2; try { $r = Invoke-WebRequest -Uri \"http://127.0.0.1:8000/\" -UseBasicParsing -TimeoutSec 5; $r.StatusCode } catch { $_.Exception.Message })",
+      "mcp__playwright__browser_navigate",
+      "PowerShell(Get-ChildItem -Recurse -Depth 3 \"c:\\\\Users\\\\EyT\\\\OneDrive\\\\Desktop\\\\Ana\\\\Roadmaps\\\\PetCareJournal\\\\API\" | Where-Object { !$_.PSIsContainer } | Select-Object FullName)",
+      "Bash(./.venv/Scripts/python.exe -m py_compile FastApi/main.py FastApi/core/config.py FastApi/core/security.py FastApi/infrastructure/db.py FastApi/modules/users/*.py FastApi/modules/pets/*.py FastApi/modules/health/*.py FastApi/modules/reminders/*.py FastApi/modules/ai/*.py)",
+      "Bash(powershell -NoProfile -Command \"Get-Process python -ErrorAction SilentlyContinue | Select-Object Id,ProcessName\")",
+      "Bash(tasklist)",
+      "Bash(powershell -NoProfile -Command \"Stop-Process -Id 51176,56156 -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 500; Get-Process python -ErrorAction SilentlyContinue | Select-Object Id,ProcessName\")",
+      "Bash(\"/c/Users/EyT/anaconda3/envs/fastapi-env/Scripts/pip.exe\" install *)"
+    ]
+  }
+}

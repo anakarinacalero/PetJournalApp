@@ -1,0 +1,63 @@
+- generic [ref=e3]:
+  - generic:
+    - img
+  - generic [ref=e4]:
+    - generic [ref=e8]:
+      - heading "FastAPI 0.1.0 OAS 3.1" [level=1] [ref=e9]:
+        - text: FastAPI
+        - generic [ref=e10]:
+          - generic [ref=e12]: 0.1.0
+          - generic [ref=e14]: OAS 3.1
+      - link "/openapi.json" [ref=e15] [cursor=pointer]:
+        - /url: /openapi.json
+        - generic [ref=e16]: /openapi.json
+    - generic [ref=e21]:
+      - heading "default Collapse operation" [level=3] [ref=e22] [cursor=pointer]:
+        - link "default" [ref=e23]:
+          - /url: "#/default"
+        - button "Collapse operation" [expanded] [ref=e24]:
+          - img [ref=e25]
+      - generic [ref=e28]:
+        - generic [ref=e31] [cursor=pointer]:
+          - button "GET / Read Root" [ref=e32]:
+            - generic [ref=e33]: GET
+            - generic [ref=e34]:
+              - link / [ref=e36]:
+                - /url: "#/default/read_root__get"
+              - generic [ref=e37]: Read Root
+          - generic "Copy to clipboard"
+          - button "get /" [ref=e40]:
+            - img [ref=e41]
+        - generic [ref=e45] [cursor=pointer]:
+          - 'button "GET /items/{item_id} Read Item" [ref=e46]':
+            - generic [ref=e47]: GET
+            - generic [ref=e48]:
+              - 'link "/items/{item_id}" [ref=e50]':
+                - /url: "#/default/read_item_items__item_id__get"
+                - generic [ref=e51]:
+                  - text: /items
+                  - text: "/{item_id}"
+              - generic [ref=e52]: Read Item
+          - generic "Copy to clipboard"
+          - 'button "get /items/{item_id}" [ref=e55]':
+            - img [ref=e56]
+    - generic [ref=e60]:
+      - heading "Schemas" [level=4] [ref=e61] [cursor=pointer]:
+        - button "Schemas" [expanded] [ref=e62]:
+          - generic [ref=e63]: Schemas
+          - img [ref=e64]
+      - generic [ref=e66]:
+        - article [ref=e67]:
+          - generic [ref=e68]:
+            - button "HTTPValidationError" [ref=e69] [cursor=pointer]:
+              - generic [ref=e71]: HTTPValidationError
+              - img [ref=e73]
+            - button "Expand all" [ref=e75] [cursor=pointer]
+            - strong [ref=e76]: object
+        - article [ref=e77]:
+          - generic [ref=e78]:
+            - button "ValidationError" [ref=e79] [cursor=pointer]:
+              - generic [ref=e81]: ValidationError
+              - img [ref=e83]
+            - button "Expand all" [ref=e85] [cursor=pointer]
+            - strong [ref=e86]: object
