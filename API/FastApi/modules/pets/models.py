@@ -1,9 +1,12 @@
 import uuid
-from datetime import datetime
-from sqlalchemy import Boolean, DateTime, String, Uuid, func
+from datetime import date, datetime
+from typing import TYPE_CHECKING
+from sqlalchemy import Date, DateTime, ForeignKey, String, Uuid, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from FastApi.infrastructure.db import Base
-from FastApi.modules.users.models import User
+
+if TYPE_CHECKING:
+    from FastApi.modules.users.models import User
 
 class Pet(Base):
     __tablename__ = "pets"
@@ -12,9 +15,10 @@ class Pet(Base):
     name: Mapped[str] = mapped_column(String(50), index=True)
     species: Mapped[str] = mapped_column(String(50))
     breed: Mapped[str] = mapped_column(String(50))
-    age: Mapped[int] = mapped_column()
-    user_id: Mapped[uuid.UUID] = mapped_column(Uuid, index=True, foreign_key="users.id",  ondelete="CASCADE")
+    birth_date: Mapped[date] = mapped_column(Date)
+    sex: Mapped[str] = mapped_column(String(10))
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
-    disabled: Mapped[bool] = mapped_column(Boolean, default=False)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, default=None)
 
     user: Mapped["User"] = relationship("User", back_populates="pets")

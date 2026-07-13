@@ -1,38 +1,51 @@
-# TODO(pets): PetService, siguiendo FastApi/modules/users/service.py
 import uuid
+
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from FastApi.modules.pets.repository import PetRepository
-from FastApi.modules.pets.schemas import PetCreate, PetCreateResponse, PetUpdateResponse
+from FastApi.modules.pets.schemas import PetCreate, PetResponse, PetUpdate
+
 
 class PetService:
-    def __init__(self, db:AsyncSession):
+    def __init__(self, db: AsyncSession):
         self.repo = PetRepository(db)
 
-    async def get_by_id(self, pet_id: uuid.UUID):
+    async def get_by_id(self, pet_id: uuid.UUID) -> PetResponse:
         pet = await self.repo.get_by_id(pet_id)
         if pet is None:
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Pet not found")
-        return pet
-    
-    async def create(self, pet: PetCreate)->PetCreateResponse:    
-        owner_pets = await self.repo.get_by_user_id(pet.user_id)
-        
-        if pet.name in [p.name for p in owner_pets]:
-            raise HTTPException(status.HTTP_409_CONFLICT, "Pet name already registered for this user")
-        return await self.repo.create(pet=pet)
-    
+        return PetResponse.model_validate(pet)
 
-    async def update(self, pet_data: PetCreate) -> PetUpdateResponse:
-        pet = await self.repo.get_by_id(pet_data.id)
+    async def create(self, data: PetCreate) -> PetResponse:
+        owner_pets = await self.repo.get_by_user_id(data.user_id)
+        if data.name in [p.name for p in owner_pets]:
+            raise HTTPException(status.HTTP_409_CONFLICT, "Pet name already registered for this user")
+
+        pet = await self.repo.create(
+            name=data.name,
+            species=data.species,
+            breed=data.breed,
+            birth_date=data.birth_date,
+            sex=data.sex,
+            user_id=data.user_id,
+        )
+        return PetResponse.model_validate(pet)
+
+    async def update(self, pet_id: uuid.UUID, data: PetUpdate) -> PetResponse:
+        pet = await self.repo.get_by_id(pet_id)
         if pet is None:
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Pet not found")
-        owner_pets = await self.repo.get_by_user_id(pet.user_id)
-        if pet_data.name in [p.name for p in owner_pets if p.id != pet.id]:
-            raise HTTPException(status.HTTP_409_CONFLICT, "Pet name already registered for this user")
-        updated_pet = await self.repo.update(pet, **pet_data.model_dump(exclude_unset=True))
-        return PetUpdateResponse.model_validate(updated_pet)
-    
+
+        fields = data.model_dump(exclude_unset=True)
+        if "name" in fields:
+            owner_pets = await self.repo.get_by_user_id(pet.user_id)
+            if fields["name"] in [p.name for p in owner_pets if p.id != pet.id]:
+                raise HTTPException(status.HTTP_409_CONFLICT, "Pet name already registered for this user")
+
+        updated_pet = await self.repo.update(pet, **fields)
+        return PetResponse.model_validate(updated_pet)
+
     async def delete(self, pet_id: uuid.UUID) -> None:
         pet = await self.repo.get_by_id(pet_id)
         if pet is None:
