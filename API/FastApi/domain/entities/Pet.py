@@ -6,7 +6,7 @@ from datetime import date, datetime
 
 class Pet(BaseModel):
     id: UUID
-    owner_id: UUID
+    user_id: UUID
     name: str
     species: str
     breed: str
