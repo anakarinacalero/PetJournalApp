@@ -9,7 +9,7 @@ from FastApi.modules.users.models import User
 class UserRepository:
     def __init__(self, db: AsyncSession):
         self.db = db
-
+        
     async def get_by_id(self, user_id: uuid.UUID) -> User | None:
         return await self.db.get(User, user_id)
 
