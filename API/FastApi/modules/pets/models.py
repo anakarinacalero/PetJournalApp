@@ -7,6 +7,7 @@ from FastApi.infrastructure.db import Base
 
 if TYPE_CHECKING:
     from FastApi.modules.users.models import User
+    from FastApi.modules.health.models import HealthRecord
 
 class Pet(Base):
     __tablename__ = "pets"
@@ -22,3 +23,6 @@ class Pet(Base):
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, default=None)
 
     user: Mapped["User"] = relationship("User", back_populates="pets")
+    health_records: Mapped[list["HealthRecord"]] = relationship(
+        "HealthRecord", back_populates="pet", cascade="all, delete-orphan"
+    )
