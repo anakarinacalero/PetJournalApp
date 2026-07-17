@@ -1,7 +1,9 @@
 import uuid
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+from FastApi.core.auth_service import AuthService
+from FastApi.infrastructure.db import get_db
 
 from FastApi.modules.pets.repository import PetRepository
 from FastApi.modules.pets.schemas import PetCreate, PetResponse, PetUpdate
@@ -10,6 +12,13 @@ from FastApi.modules.pets.schemas import PetCreate, PetResponse, PetUpdate
 class PetService:
     def __init__(self, db: AsyncSession):
         self.repo = PetRepository(db)
+
+    async def get_pets_by_user(self, user_id: uuid.UUID) -> list[PetResponse]:
+        owner_pets = await self.repo.get_by_user_id(user_id)
+        return owner_pets
+    
+    def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
+        return AuthService(db)
 
     async def get_by_id(self, pet_id: uuid.UUID) -> PetResponse:
         pet = await self.repo.get_by_id(pet_id)
