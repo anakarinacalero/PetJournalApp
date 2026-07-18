@@ -1,1 +1,8 @@
-"# PetJournalApp" 
+"# PetJournalApp"
+.env
+.venv/
+.claude/
+.vscode/
+__pycache__/
+*.pyc
+API/uploads/
